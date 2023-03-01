@@ -1,0 +1,144 @@
+version: '3.10'
+
+networks:
+  mynetwork:
+    name: mynetwork
+    driver: bridge
+
+services:
+  school_service:
+    image: registry.tuoitre.vn/tuyensinh/school_service:v1
+    environment:
+      - REGISTRY_USERNAME= dangph
+      - REGISTRY_PASSWORD= Docker123
+    container_name: school_service
+    hostname: school_service
+    # image: backend_api:v1
+    # build:
+    #   context: .
+    #   dockerfile: docker/api/Dockerfile
+    #   args:
+    #     - PYTHON_VERSION=${PYTHON_VERSION}
+    #     - API_PORT=${API_PORT}
+    ports:
+      - ${API_PORT}:${API_PORT}
+    # volumes:
+    #   - ../school-service:/app
+    networks:
+      - mynetwork
+    dns:
+      - 8.8.8.8
+
+  db:
+    image: registry.tuoitre.vn/tuyensinh/mysql:v1
+    environment:
+      - REGISTRY_USERNAME= dangph
+      - REGISTRY_PASSWORD= Docker123
+#      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_school=${db_schoolname}
+#      - MYSQL_PASSWORD=${db_password}
+      - MYSQL_ROOT_PASSWORD=${db_password}
+#      - TZ=${WORKSPACE_TIMEZONE}
+#     build:
+#       context: .
+#       dockerfile: docker/db/Dockerfile
+#       args:
+#         - MYSQL_VERSION=${MYSQL_VERSION}
+    container_name: mysql
+    hostname: db
+    volumes:
+      - ./docker/db/sql_files:/usr/share/sql_files/
+      - ./docker/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - ${DB_PORT}:3306
+    networks:
+      - mynetwork
+    dns:
+      - 8.8.8.8
+
+  elasticsearch:
+    image: registry.tuoitre.vn/tuyensinh/elasticsearch:v1
+    environment:
+      - REGISTRY_USERNAME= dangph
+      - REGISTRY_PASSWORD= Docker123
+      - cluster.name=laradock-cluster
+      - node.name=laradock-node
+      - bootstrap.memory_lock=true
+      - cluster.initial_master_nodes=laradock-node
+    container_name: es-container
+    # build:
+    #   context: .
+    #   dockerfile: docker/elasticsearch/Dockerfile
+    #   args:
+    #     - ELK_VERSION=${ES_VERSION}
+    #     - ELASTICSEARCH_PORT=${ELASTICSEARCH_PORT}
+    volumes:
+      - ./docker/elasticsearch:/var/lib/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 262144
+        hard: 262144
+    ports:
+    - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
+    depends_on:
+      - school_service
+    networks:
+      - mynetwork
+    dns:
+      - 8.8.8.8
+
+  rabbitmq:
+    image: registry.tuoitre.vn/tuyensinh/rabbitmq:v1
+    environment:
+      REGISTRY_USERNAME: dangph
+      REGISTRY_PASSWORD: Docker123
+#     build:
+#       context: .
+#       dockerfile: docker/rabbitmq/Dockerfile
+#       args:
+#         - RABBIT_VERSION=${RABBIT_VERSION}
+#         - RABBITMQ_PORT_1=${RABBITMQ_PORT_1}
+#         - RABBITMQ_PORT_2=${RABBITMQ_PORT_2}
+    ports:
+      - ${RABBITMQ_PORT_1}:${RABBITMQ_PORT_1}
+      - ${RABBITMQ_PORT_2}:${RABBITMQ_PORT_2}
+    privileged: true
+    hostname: rabbitmq
+    volumes:
+#      - ./rabbitmq:/var/lib/rabbitmq
+      - ./docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./docker/rabbitmq/management_agent.disable_metrics_collector.conf:/etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
+    depends_on:
+      - school_service
+    networks:
+      - mynetwork
+    dns:
+      - 8.8.8.8
+
+  nginx:
+    image: registry.tuoitre.vn/tuyensinh/nginx:v1
+    environment:
+      REGISTRY_USERNAME: dangph
+      REGISTRY_PASSWORD: Docker123
+    # build:
+    #   context: .
+    #   dockerfile: docker/nginx/Dockerfile
+    #   args:
+    #     - NGINX_VERSION=${NGINX_VERSION}
+    #     - NGINX_PORT=${NGINX_PORT}
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+    volumes:
+      # Logging
+      - ./docker/nginx/log:/var/log/nginx/
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d/
+      - ../school-service:/var/www/html
+    depends_on:
+      - school_service
+    networks:
+      - mynetwork
+    dns:
+      - 8.8.8.8
