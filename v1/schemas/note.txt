@@ -1,0 +1,6 @@
+When orm_mode is set to True in the Config class, it enables Pydantic's ORM mode. In ORM mode, Pydantic will:
+
+Assume that the model is backed by an ORM (object-relational mapping) system such as SQLAlchemy.
+Allow the model to be populated from an ORM query result, which returns a nested structure of objects rather than a flat structure of column values.
+Convert the ORM objects to dictionaries using their .__dict__ attributes, which include not only the object's attributes, but also any ORM-specific attributes such as relationships and foreign keys.
+By setting orm_mode = True, you are telling Pydantic that this model is designed to work with an ORM system, and that it should use the ORM-specific behavior described above. This can simplify the process of mapping between your ORM objects and JSON representations of your data.

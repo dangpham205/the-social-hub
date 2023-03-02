@@ -54,13 +54,4 @@ docs/_build/
 app-dependencies
 .idea
 gunicorn.conf.py
-draft.py
-test.py
-docker/elasticsearch/nodes
-docker/redis/dump.rdb
-docker/nginx/log
-venv/
-docker/env
-workers/logs
-workers/sql_err_log.txt
-workers/es_err_log.txt
+cores

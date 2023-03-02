@@ -1,0 +1,8 @@
+Provide system resources for ES:
+sudo sysctl -w vm.max_map_count=262144
+
+Remove all images
+docker rmi -f $(docker images -aq)
+
+Force the container to listen to the changes of the codes (container bash)
+pkill -HUP gunicorn

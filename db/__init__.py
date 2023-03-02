@@ -8,14 +8,5 @@ Base = declarative_base()
 """
     Import các class cần cho việc tạo bảng. Import class nào thì tạo bảng đó
 """
-from .models.school import School
-from .models.address import Address
-from .models.infrastructure import Infrastructer
-from .models.enrollment_information import EnrollmentInformation
-from .models.staff import Staff
-from .models.category import Category
-from .models.post import Post
-from .models.news import News
-from .models.link import Link
-from cores.activity_logs.activity_log_model import ActivityLog
+from .models.user import User
 
