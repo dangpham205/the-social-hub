@@ -48,7 +48,6 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
-.env
 .access_log
 .error_log
 app-dependencies
