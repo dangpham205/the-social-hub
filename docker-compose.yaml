@@ -16,6 +16,8 @@ services:
       args:
         - PYTHON_VERSION=${PYTHON_VERSION}
         - API_PORT=${API_PORT}
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
     ports:
       - ${API_PORT}:${API_PORT}
     volumes:
