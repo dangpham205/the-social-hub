@@ -5,11 +5,6 @@ from datetime import datetime, date
 from enum import Enum
 from enums.db import model_enum
 
-class GenderEnum(Enum):
-    male = model_enum.gender_male
-    female = model_enum.gender_female
-    other = model_enum.gender_other
-
 class SignUpBase(BaseModel):
     class Config:
         orm_mode = True
