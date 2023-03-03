@@ -1,6 +1,6 @@
 from pythondi import Provider, configure
-# from repositories.contracts.school_contract import SchoolContract
-# from repositories.sqlachemy.school_repository import SchoolRepository
+from repositories.contracts.user_contract import UserContract
+from repositories.sqlachemy.user_repository import UserRepository
 
 
 """
@@ -9,6 +9,5 @@ from pythondi import Provider, configure
 """
 def init_di():
     provider = Provider()
-    # provider.bind(SchoolContract, SchoolRepository)
-    # provider.bind(SqlAchemyContracts, SqlAchemyAbstract)
+    provider.bind(UserContract, UserRepository)
     configure(provider=provider)

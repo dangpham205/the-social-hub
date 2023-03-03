@@ -19,8 +19,7 @@ class SignUpService():
         # data = User(**self.info.dict())
         try:
             service = UserService()
-            result = service.repo.create(db=self.session, obj=self.info.dict())
-            
+            result = service.repo.create(self.session, self.info.dict())
             return result
         except:
             

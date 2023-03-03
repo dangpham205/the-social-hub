@@ -18,4 +18,4 @@ class SignUpBase(BaseModel):
     full_name: str
     phone: str
     dob: date
-    gender: GenderEnum
+    gender: str

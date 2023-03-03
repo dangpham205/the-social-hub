@@ -23,7 +23,7 @@ def list_endpoints(request: Request):
 
 @router.get('/create_tables')
 def create_tables(password: str):
-    if password == 'password123':
+    if password == '123':
         _host = config('db_host')
         _username = config('db_username')
         _password = config('db_password') 
@@ -37,7 +37,7 @@ def create_tables(password: str):
     
 @router.get('/create_es')
 def create_es(password: str):
-    if password == 'password123':
+    if password == '123':
         from cores.elasticsearch.es_helper import ElasticSearch
         from cores.elasticsearch import es_base
         from enums.db import table_name_enum
