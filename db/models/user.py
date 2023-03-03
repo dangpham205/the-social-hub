@@ -20,6 +20,6 @@ class User(BaseModel):
     avatar_2nd = Column(String(300), nullable=True)
     bio = Column(String(300), nullable=True)
     dob = Column(DateTime, nullable=False)
-    gender = Column(Enum(model_enum.gender_male, model_enum.gender_female, model_enum.gender_other), nullable=False)
+    gender = Column(Enum(model_enum.GenderEnum), nullable=False)
     location = Column(String(300), nullable=True)
     is_verified = Column(Boolean, nullable=False, default=False)

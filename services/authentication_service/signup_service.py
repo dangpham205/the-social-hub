@@ -1,7 +1,7 @@
 from db import User
 from sqlalchemy import or_
 from cores.databases.connection import get_db
-from repositories.services.user_service import UserService
+from repositories.services import UserService
 
 class SignUpService():
     def __init__(self, info):
@@ -19,7 +19,7 @@ class SignUpService():
         # data = User(**self.info.dict())
         try:
             service = UserService()
-            result = service.repo.create(self.session, self.info.dict())
+            result = service.repo.create(self.session, self.info)
             return result
         except:
             

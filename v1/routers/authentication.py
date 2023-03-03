@@ -16,7 +16,6 @@ async def show(obj: authentication_schema.SignUpBase):
     signup = signup_service.SignUpService(info=obj)
     result = signup.verify()
     return DataResponse().success_response(result)
-
-
+    # return obj
         
     
