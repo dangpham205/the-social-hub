@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator, Field, conint, Json
+from pydantic import BaseModel, validator, Field, conint, Json, EmailStr
 from typing import List, Any
 from cores.helpers import helper
 from datetime import datetime, date
@@ -13,6 +13,8 @@ class SignUpBase(BaseModel):
     phone: str
     dob: date
     gender: model_enum.GenderEnum
+    password: str
+    password_confirm: str
 
     @validator('email')
     def email_must_contain_at(cls, v):
@@ -37,15 +39,28 @@ class SignUpBase(BaseModel):
             raise ValueError("Phone number invalid")
         return v
 
+    @validator('password_confirm')
+    def passwords_match(cls, v, values):
+        if 'password' in values and v != values['password']:
+            raise ValueError('Passwords do not match')
+        return v
+
     class Config:
         orm_mode = True
         schema_extra = {
             "example": {
-                'username': 'user_nam.e',
+                'username': 'usernam._e',
                 'email': 'sdasd@example.com',
                 'full_name': 'Hai Danger',
                 'phone': '+123123',
                 'dob': '2023-03-03',
-                'gender': 'Male'
+                'gender': 'Male',
+                'password': 'pass',
+                'password_confirm': 'pass',
             }
         }
+        
+class LoginBase(BaseModel):
+    username: str
+    password: str
+

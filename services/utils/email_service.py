@@ -24,11 +24,10 @@ from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 from email import encoders
 from decouple import config
-# 465
+
 class EmailService():
 
-    def send_mail(send_from, send_to, subject,cc, message, files=[],
-                server="smtp.gmail.com", port=587, use_tls=True):
+    def send_mail(self, send_to, title, message, cc=None, files=[]):
         """Compose and send email with provided info and attachments.
         Args:
         subject (str): message title
@@ -38,14 +37,19 @@ class EmailService():
         port (int): port number
         use_tls (bool): use TLS mode
         """
+        server="smtp.gmail.com"
+        port=587
+        use_tls=True
         msg = MIMEMultipart()
-        msg['From'] = send_from
+        msg['From'] = 'TheSocialHub Team'
         msg['To'] = COMMASPACE.join(send_to)
-        msg['Cc'] = COMMASPACE.join(cc)
+        if cc:
+            msg['Cc'] = COMMASPACE.join(cc)
         msg['Date'] = formatdate(localtime=True)
-        msg['Subject'] = subject
+        msg['Subject'] = title
+        username = config('EMAIL_HOST')
+        password = config('EMAIL_HOST_PASSWORD')
         
-        print(msg['To'])
 
         msg.attach(MIMEText(message))
 
@@ -61,8 +65,6 @@ class EmailService():
         smtp = smtplib.SMTP(server, port)
         if use_tls:
             smtp.starttls()
-        username = config('EMAIL_HOST')
-        password = config('EMAIL_HOST_PASSWORD')
         smtp.login(username, password)
-        smtp.sendmail(send_from, send_to, msg.as_string())
+        smtp.sendmail('TheSocialHub Team', send_to, msg.as_string())
         smtp.quit()

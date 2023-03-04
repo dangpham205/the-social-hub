@@ -34,6 +34,20 @@ def create_tables(password: str):
         return 'OK'
     else: 
         return 'No'
+
+@router.get('/drop_db')
+def create_tables(password: str):
+    if password == '123':
+        _host = config('db_host')
+        _username = config('db_username')
+        _password = config('db_password') 
+        _database = config('db_database')
+        engine = create_engine(
+            f'mysql+pymysql://{_username}:{_password}@{_host}/{_database}?charset=utf8mb4', echo=False, poolclass=NullPool, isolation_level="READ UNCOMMITTED")
+        Base.metadata.drop_all(engine)
+        return 'OK'
+    else: 
+        return 'No'
     
 @router.get('/create_es')
 def create_es(password: str):

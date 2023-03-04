@@ -4,6 +4,7 @@ from db import Base
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.declarative import declared_attr
 from decouple import config
+import datetime
 class BaseModel(Base):
     __abstract__ = True
     __table_args__ = {
@@ -24,3 +25,7 @@ class BaseModel(Base):
     @hybrid_property
     def active(self):
         return self.deleted_at == None
+
+    def update_time(self):
+        self.updated_at=datetime.datetime.now()
+        return
