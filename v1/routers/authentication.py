@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, HTTPException, Depends, Request, UploadFi
 from cores.schemas.sche_base import DataResponse
 from v1.schemas import authentication_schema
 from cores.helpers import helper
-from services.authentication_service import signup_service
+from services.authentication_service import SignUpService, LoginService, TokenService
 from utils.util_funcs import return_status_codes
 
 router = APIRouter(
@@ -13,15 +13,18 @@ router = APIRouter(
 )
 
 desc_signup = f"""Create unverified account\n
-    {return_status_codes('200', '500', '501')}
+    {return_status_codes('200', '500', '501', '502')}
 """
 desc_signup_verify = f"""Create unverified account\n
     {return_status_codes('200', '500', '503', '504', '505')}
 """
+desc_resend_verify = f"""Resend verification email\n
+    {return_status_codes('200', '500', '502')}
+"""
 
 @router.post('/signup', description=desc_signup)
 async def signup(obj: authentication_schema.SignUpBase):
-    signup = signup_service.SignUpService(info=obj)
+    signup = SignUpService(info=obj)
     info_valid = signup.verify_signup_info()
     if not info_valid[0]:
         return DataResponse().custom_response(500, False, f"{info_valid[1]} already exists")
@@ -30,35 +33,45 @@ async def signup(obj: authentication_schema.SignUpBase):
         return DataResponse().custom_response(501, False, f"Create new user failed! Please try again later.")
     token = signup.generate_confirm_token(unverified_user.id)
     send_email_success = signup.send_confirm_email(token=token)
-    # if not send_email_success:
-    #     return DataResponse().custom_response(502, False, f"Create new user failed! Please try again later.")
+    if not send_email_success:
+        return DataResponse().custom_response(502, False, f"Something went wrong! Please try again later.")
     
     return DataResponse().success_response('Please check your email')
 
 @router.post('/signup-verify', description=desc_signup_verify)
 async def signup_verify(token: str):
-    signup = signup_service.SignUpService()
+    signup = SignUpService()
     result = signup.verify_user_account(token=token)
     return result
 
-@router.post('/resend-verify', description='Resend verification email')
+@router.post('/resend-verify', description=desc_resend_verify)
 async def resend_verify(email: str):
-    signup = signup_service.SignUpService()
-    uid = signup.get_uid_by_email(email=email)
+    signup = SignUpService()
+    uid = signup.get_uid_by(email=email)
+    if not uid:
+        return DataResponse().custom_response(500, False, f"Something went wrong! Please try again later.")
     token = signup.generate_confirm_token(id=uid)
     send_email_success = signup.send_confirm_email(token=token, recipients=[email])
-    # if not send_email_success:
-    #     return DataResponse().custom_response(502, False, f"Create new user failed! Please try again later.")
+    if not send_email_success:
+        return DataResponse().custom_response(502, False, f"Something went wrong! Please try again later.")
     return DataResponse().success_response('Please check your email')
     
 
 @router.post('/login', description='Login')
 async def login(obj: authentication_schema.LoginBase):
-    return 1
+    login = LoginService(info=obj)
+    uid = login.get_uid()
+    if not uid:
+        return DataResponse().custom_response(506, False, f"Unregistered email/username! Please signup.")
+    verify_login = login.verify_password(uid=uid)
+    if not verify_login:
+        return DataResponse().custom_response(507, False, f"Wrong password! Please try again.")
+    user_token = TokenService(uid=uid).generate_user_token(long_live=obj.remember_me)
+    return DataResponse().success_response('Login success', token=user_token)
 
-@router.post('/logout')
-async def show(token: str):
-    return 1
+# @router.post('/logout')
+# async def show(token: str):
+#     return 1
         
         
     

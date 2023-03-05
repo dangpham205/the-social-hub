@@ -5,8 +5,10 @@ from repositories.services import UserService
 from cores.authen import signJWT, decodeJWT
 import datetime
 from decouple import config
-from services.utils.email_service import EmailService
+from services.utils_service.email_service import EmailService
+from services.authentication_service.token_service import TokenService
 from cores.schemas.sche_base import DataResponse
+from utils import util_funcs
 
 class SignUpService():
     def __init__(self, info=None):
@@ -45,11 +47,8 @@ class SignUpService():
             return None
     
     def generate_confirm_token(self, id):
-        expires_at = datetime.datetime.now() + datetime.timedelta(seconds = int(config('SIGNUP_CONFIRM_DURATION')))
-        info = {
-            'uid': id,
-            'expires_at': expires_at.isoformat()
-        }
+        expires_at = util_funcs.create_expires_duration(seconds=config('SIGNUP_CONFIRM_DURATION'))
+        info = util_funcs.token_signup_format(id=id, expires_at=expires_at)
         return signJWT(info=info)
     
     def send_confirm_email(self, token, recipients=None):
@@ -87,19 +86,25 @@ class SignUpService():
 
         now = datetime.datetime.now()
         expires_at = datetime.datetime.strptime(expires_at, '%Y-%m-%dT%H:%M:%S.%f')
-        if now < expires_at:
+        if now > expires_at: 
+            return DataResponse().custom_response(504, False, 'Verification link expired')
+        elif now < expires_at:
             user = self.session.query(User).filter(User.id == uid).first()
             if user.is_verified == True:
                 return DataResponse().custom_response(505, False, 'User already verified. Please login to continue.')
             user.is_verified = True
             user.update_time()
             self.session.commit()
-            return DataResponse().success_response('Succeed! Welcome to TheSocialHub')
-        elif now > expires_at:
-            return DataResponse().custom_response(504, False, 'Verification link expired')
+            user_token = TokenService(uid=uid).generate_user_token()
+            return DataResponse().success_response('Succeed! Welcome to TheSocialHub', token=user_token)
         return DataResponse().custom_response(500, False, 'Verification Failed')
     
-    def get_uid_by_email(self, email):
-        user = self.session.query(User).filter(User.email == email).first()
+    def get_uid_by(self, email=None, username=None):
+        if email:
+            user = self.session.query(User).filter(User.email == email).first()
+        if username:
+            user = self.session.query(User).filter(User.username == username).first()
         return user.id if user else None
+        
+
         

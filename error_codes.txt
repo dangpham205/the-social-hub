@@ -3,5 +3,7 @@
 503: confirm signup failed (touched token, token is invalid)
 504: confirm signup expired
 505: user already verified
+506: login with unregistered email/username
+507: wrong password
 
 

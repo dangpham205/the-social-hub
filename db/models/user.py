@@ -36,3 +36,4 @@ class User(BaseModel):
 
     def check_password(self, attempted_password):
         return hashlib.sha256(attempted_password.encode()).hexdigest() == self.password_hash
+    

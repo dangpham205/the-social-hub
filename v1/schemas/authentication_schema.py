@@ -61,6 +61,8 @@ class SignUpBase(BaseModel):
         }
         
 class LoginBase(BaseModel):
-    username: str
+    user: str
     password: str
+    remember_me: bool = False
+    
 
