@@ -17,6 +17,10 @@ tags_metadata = [
         "description": "Support for the signup, login, logout function",
     },
     {
+        "name": "User",
+        "description": "Features for users: update profile, follow,...",
+    },
+    {
         "name": "kkk",
         "description": "Only God knows why I'm here",
     },
@@ -43,9 +47,10 @@ app.add_middleware(
 
 init_di()
 
-from v1.routers import authentication, db_es
+from v1.routers import authentication, db_es, user
 
 app.include_router(authentication.router)
+app.include_router(user.router)
 app.include_router(db_es.router)
 
 

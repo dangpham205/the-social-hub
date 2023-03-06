@@ -21,6 +21,9 @@ desc_signup_verify = f"""Create unverified account\n
 desc_resend_verify = f"""Resend verification email\n
     {return_status_codes('200', '500', '502')}
 """
+desc_login = f"""Login\n
+    {return_status_codes('200', '500', '506', '507', '508')}
+"""
 
 @router.post('/signup', description=desc_signup)
 async def signup(obj: authentication_schema.SignUpBase):
@@ -57,21 +60,32 @@ async def resend_verify(email: str):
     return DataResponse().success_response('Please check your email')
     
 
-@router.post('/login', description='Login')
+@router.post('/login', description=desc_login)
 async def login(obj: authentication_schema.LoginBase):
     login = LoginService(info=obj)
     uid = login.get_uid()
     if not uid:
         return DataResponse().custom_response(506, False, f"Unregistered email/username! Please signup.")
-    verify_login = login.verify_password(uid=uid)
-    if not verify_login:
+    is_user_verified = login.check_user_verified(uid)
+    if not is_user_verified: 
+        return DataResponse().custom_response(508, False, f"Your account is not verified.")
+    verify_password = login.verify_password(uid=uid)
+    if not verify_password:
         return DataResponse().custom_response(507, False, f"Wrong password! Please try again.")
     user_token = TokenService(uid=uid).generate_user_token(long_live=obj.remember_me)
     return DataResponse().success_response('Login success', token=user_token)
 
-# @router.post('/logout')
-# async def show(token: str):
-#     return 1
+@router.post('/-----------------------------------------------')
+async def below_not_done(token: str):
+    return 1
+
+@router.post('/request-reset-password')
+async def request_reset_password(email: str):
+    return 1
+
+@router.post('/reset-password')
+async def reset_password(token: str, new_pass: str):
+    return 1
         
         
     

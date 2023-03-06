@@ -5,5 +5,6 @@
 505: user already verified
 506: login with unregistered email/username
 507: wrong password
+508: unverified user try to login
 
 

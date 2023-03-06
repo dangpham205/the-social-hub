@@ -14,6 +14,10 @@ class LoginService():
             user = self.session.query(User).filter(User.username == self.info.user).first()
         return user.id if user else None
     
+    def check_user_verified(self, uid):
+        user = self.session.query(User).get(uid)
+        return user.is_verified
+        
     def verify_password(self, uid):
         user = self.session.query(User).filter(User.id == uid).first()
         return user.check_password(self.info.password)
