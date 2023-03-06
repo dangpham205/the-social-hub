@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from repositories.contracts.user_contract import UserContract
 class UserRepository(SqlAchemyAbstract, UserContract):
     def __init__(self):
+        print('user repo')
         self.set_model(User)
         super().__init__()
 

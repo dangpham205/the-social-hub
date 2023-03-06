@@ -16,6 +16,8 @@ services:
       args:
         - PYTHON_VERSION=${PYTHON_VERSION}
         - API_PORT=${API_PORT}
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
     ports:
       - ${API_PORT}:${API_PORT}
     volumes:
@@ -38,7 +40,7 @@ services:
       # - MYSQL_ROOT_school=${db_schoolname}
 #      - MYSQL_PASSWORD=${db_password}
       - MYSQL_ROOT_PASSWORD=${db_password}
-#      - TZ=${WORKSPACE_TIMEZONE}
+      - TZ=Asia/Ho_Chi_Minh
     volumes:
       - ./docker/db/sql_files:/usr/share/sql_files/
       # - ./docker/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
@@ -121,23 +123,23 @@ services:
   #   dns:
   #     - 8.8.8.8
 
-  nginx:
-    build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
-      args:
-        - NGINX_VERSION=${NGINX_VERSION}
-        - NGINX_PORT=${NGINX_PORT}
-    ports:
-      - ${NGINX_PORT}:${NGINX_PORT}
-    volumes:
-      # Logging
-      - ./docker/nginx/log:/var/log/nginx/
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d/
-      - ../school-service:/var/www/html
-    depends_on:
-      - thesocialhub
-    networks:
-      - mynetwork
-    dns:
-      - 8.8.8.8
+  # nginx:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/nginx/Dockerfile
+  #     args:
+  #       - NGINX_VERSION=${NGINX_VERSION}
+  #       - NGINX_PORT=${NGINX_PORT}
+  #   ports:
+  #     - ${NGINX_PORT}:${NGINX_PORT}
+  #   volumes:
+  #     # Logging
+  #     - ./docker/nginx/log:/var/log/nginx/
+  #     - ./docker/nginx/conf.d:/etc/nginx/conf.d/
+  #     - ../school-service:/var/www/html
+  #   depends_on:
+  #     - thesocialhub
+  #   networks:
+  #     - mynetwork
+  #   dns:
+  #     - 8.8.8.8

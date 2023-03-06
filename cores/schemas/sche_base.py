@@ -23,20 +23,23 @@ class ResponseSchemaBase(BaseModel):
 
 class DataResponse(ResponseSchemaBase, GenericModel, Generic[T]):
     data: Optional[T] = None
+    token: str = None
 
     class Config:
         arbitrary_types_allowed = True
 
-    def custom_response(self, code: int, success: bool, data: T):
+    def custom_response(self, code: int, success: bool, data: T, token=None):
         self.code = code
         self.success = success
         self.data = data
+        self.token = token
         return self
 
-    def success_response(self, data: T):
+    def success_response(self, data: T, token=None):
         self.code = 200
         self.success = True
         self.data = data
+        self.token = token
         return self
 
 class MetadataSchema(BaseModel):

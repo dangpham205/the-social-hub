@@ -1,0 +1,10 @@
+501: write data to mysql failed
+502: send email failed (confirm signup, ...)
+503: confirm signup failed (touched token, token is invalid)
+504: confirm signup expired
+505: user already verified
+506: login with unregistered email/username
+507: wrong password
+508: unverified user try to login
+
+
