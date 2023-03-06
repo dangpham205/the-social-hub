@@ -5,17 +5,27 @@ from cores.helpers import helper
 from services.authentication_service import SignUpService, LoginService, TokenService
 from utils.util_funcs import return_status_codes
 from cores.authen.auth_bearer import JWTBearer
+from decorators import refresh_token
 
 router = APIRouter(
     prefix='/user',
     tags=['User'],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Not found"}},
-    dependencies=[Depends(JWTBearer())],
+    # dependencies=[Depends(JWTBearer())],
 )
 
+def add_status_field(endpoint):
+    async def wrapper():
+        response = await endpoint()
+        response['status'] = 'success'
+        return response
+    return wrapper
+
 @router.get('/profile', description='dsadsa')
+@add_status_field
 async def get_profile(regetToken=Depends(JWTBearer())):
-    pass
+    return {'u': regetToken}
+    return 1
 
 @router.post('/update-profile', description='dsadsa')
 async def update_profile(obj: authentication_schema.SignUpBase):
