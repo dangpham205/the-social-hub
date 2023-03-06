@@ -2,6 +2,10 @@ from abc import ABCMeta, abstractmethod
 from sqlalchemy.orm import Session
 class SqlAchemyContracts:
     __metaclass__ = ABCMeta
+    
+    def __init__(self):
+        print('sql contract')
+    
     @abstractmethod
     def find(self, db: Session, id: int, with_trash: bool = False):
         pass

@@ -8,6 +8,7 @@ from repositories.sqlachemy.user_repository import UserRepository
     Quyết định class nào sẽ được thực thi khi implement từ interface
 """
 def init_di():
+    print('init di')
     provider = Provider()
     provider.bind(UserContract, UserRepository)
     configure(provider=provider)
