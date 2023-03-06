@@ -21,8 +21,8 @@ class User(BaseModel):
     avatar = Column(String(300), nullable=True)
     avatar_2nd = Column(String(300), nullable=True)
     bio = Column(String(300), nullable=True)
-    dob = Column(DateTime, nullable=False)
-    gender = Column(Enum(model_enum.GenderEnum), nullable=False)
+    dob = Column(DateTime, nullable=True)
+    gender = Column(Enum(model_enum.GenderEnum), nullable=True)
     location = Column(String(300), nullable=True)
     is_verified = Column(Boolean, nullable=False, default=False)
 
