@@ -11,8 +11,8 @@ class SignUpBase(BaseModel):
     email: str
     full_name: str
     phone: str
-    dob: date
-    gender: model_enum.GenderEnum
+    # dob: date
+    # gender: model_enum.GenderEnum
     password: str
     password_confirm: str
 

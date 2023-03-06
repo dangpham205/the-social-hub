@@ -36,8 +36,8 @@ class SignUpService():
                 email=self.info.email,
                 full_name=self.info.full_name,
                 phone=self.info.phone,
-                dob=self.info.dob,
-                gender=self.info.gender,
+                # dob=self.info.dob,
+                # gender=self.info.gender,
                 password=self.info.password
             )
             result = service.repo.create(self.session, user)
