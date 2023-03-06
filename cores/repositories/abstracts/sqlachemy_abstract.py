@@ -15,6 +15,9 @@ class SqlAchemyAbstract(SqlAchemyContracts):
     # #             activity_log: ActivityLog = Depends(ActivityLog)):
     # #     self.service = activity_log
     # #     pass
+    
+    def __init__(self):
+        print('sql abstract')
 
     @abstractmethod
     def get_model(self):
