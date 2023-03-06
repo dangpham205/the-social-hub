@@ -8,3 +8,8 @@
 508: unverified user try to login
 
 
+
+For all the APIs that required authentication token
+    401: invalid token from user (can't decode)
+    402: expired token from user --> login again
+    403: wrong bearer token (not Header Bearer token)

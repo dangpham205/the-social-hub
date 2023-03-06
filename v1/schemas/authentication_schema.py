@@ -53,8 +53,8 @@ class SignUpBase(BaseModel):
                 'email': 'sdasd@example.com',
                 'full_name': 'Hai Danger',
                 'phone': '+123123',
-                'dob': '2023-03-03',
-                'gender': 'Male',
+                # 'dob': '2023-03-03',
+                # 'gender': 'Male',
                 'password': 'pass',
                 'password_confirm': 'pass',
             }
