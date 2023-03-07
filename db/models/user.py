@@ -37,3 +37,17 @@ class User(BaseModel):
     def check_password(self, attempted_password):
         return hashlib.sha256(attempted_password.encode()).hexdigest() == self.password_hash
     
+    
+    def __repr__(self) -> str:
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'full_name': self.full_name,
+            'avatar': self.avatar,
+            'avatar_2nd': self.avatar_2nd,
+            'bio': self.bio,
+            'dob': self.dob,
+            'gender': self.gender,
+            'location': self.location,
+        }

@@ -11,5 +11,6 @@
 
 For all the APIs that required authentication token
     401: invalid token from user (can't decode)
+    403: wrong bearer token (not Header Bearer token, ...)
     402: expired token from user --> login again
-    403: wrong bearer token (not Header Bearer token)
+    405: token does not have permission to perform the action (trying to update another user profile)
