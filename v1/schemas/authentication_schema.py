@@ -4,6 +4,7 @@ from cores.helpers import helper
 from datetime import datetime, date
 from enum import Enum
 from enums.db import model_enum
+from fastapi import HTTPException
 import re
 
 class SignUpBase(BaseModel):
@@ -19,6 +20,7 @@ class SignUpBase(BaseModel):
     @validator('email')
     def email_must_contain_at(cls, v):
         if "@" not in v or v.endswith('@'):
+            # raise HTTPException(status_code=422, detail='Invalid email address')
             raise ValueError("Email invalid")
         return v
     
