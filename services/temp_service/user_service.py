@@ -54,6 +54,7 @@ class UserService():
                 column = key_column_map.get(key)
                 if column is not None:
                     setattr(user, column.name, value)
+            user.update_time()
             self.session.commit()
             return DataResponse().custom_response(200, True, info)
         except Exception:
@@ -70,6 +71,7 @@ class UserService():
                 user.avatar = kwargs['avatar']
             if 'avatar_2nd' in kwargs:
                 user.avatar_2nd = kwargs['avatar_2nd']
+            user.update_time()
             self.session.commit()
             
             return DataResponse().custom_response(200, True, 'Update succeed')

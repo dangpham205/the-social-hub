@@ -1,11 +1,11 @@
 from fastapi import APIRouter, status, HTTPException, Depends, Request, UploadFile, File
 from cores.schemas.sche_base import DataResponse
-from v1.schemas import user_schema
+from v1.schemas import post_schema
 from cores.helpers import helper
 from utils.util_funcs import return_status_codes
 from cores.authen.auth_bearer import JWTBearer
 from decorators.refresh_token import refresh_token
-from services.temp_service import UserService
+from services.temp_service import PostService
 
 router = APIRouter(
     prefix='/post',
@@ -14,7 +14,17 @@ router = APIRouter(
     # dependencies=[Depends(JWTBearer())],
 )
 
-@router.get('/create/', description='đấ')
+desc_create_post = f"""Create post\n
+    {return_status_codes('200', '500')}
+"""
+
+@router.post('/create', description=desc_create_post)
 @refresh_token
-async def create_post(uid: int, user_token=Depends(JWTBearer())):
+async def create_post(obj: post_schema.CreatePostSchema, user_token=Depends(JWTBearer())):
+    post_service = PostService(user_token=user_token)
     pass
+
+from fastapi.responses import JSONResponse
+# error_response = JSONResponse(content={"detail": "Item not found"}, status_code=400)
+#         # Raise the custom JSON response
+#         raise error_response
