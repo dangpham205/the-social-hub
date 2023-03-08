@@ -48,11 +48,16 @@ async def signup_verify(token: str):
     return result
 
 @router.post('/resend-verify', description=desc_resend_verify)
-async def resend_verify(email: str):
+async def resend_verify(user: str):
     signup = SignUpService()
-    uid = signup.get_uid_by(email=email)
+    if '@' in user:
+        uid = signup.get_uid_by(email=user)
+    else:
+        uid = signup.get_uid_by(username=user)
     if not uid:
         return DataResponse().custom_response(500, False, f"Something went wrong! Please try again later.")
+    
+    email = signup.get_email_by_uid(uid=uid)
     token = signup.generate_confirm_token(id=uid)
     send_email_success = signup.send_confirm_email(token=token, recipients=[email])
     if not send_email_success:
@@ -75,17 +80,17 @@ async def login(obj: authentication_schema.LoginBase):
     user_token = TokenService(uid=uid).generate_user_token(long_live=obj.remember_me)
     return DataResponse().success_response('Login success', token=user_token)
 
-@router.post('/-----------------------------------------------')
-async def below_not_done(token: str):
-    return 1
+# @router.post('/-----------------------------------------------')
+# async def below_not_done(token: str):
+#     return 1
 
-@router.post('/request-reset-password')
-async def request_reset_password(email: str):
-    return 1
+# @router.post('/request-reset-password')
+# async def request_reset_password(email: str):
+#     return 1
 
-@router.post('/reset-password')
-async def reset_password(token: str, new_pass: str):
-    return 1
+# @router.post('/reset-password')
+# async def reset_password(token: str, new_pass: str):
+#     return 1
         
         
     

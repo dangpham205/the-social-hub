@@ -10,6 +10,8 @@ Developers:\n
     + Kien Duong (Frontend)
 Hotlines:\n
     + 911
+Error codes:\n
+    + https://github.com/dawnnywhereyouat/the-social-hub/blob/main/error_codes.txt
 """
 tags_metadata = [
     {
@@ -19,6 +21,10 @@ tags_metadata = [
     {
         "name": "User",
         "description": "Features for users: update profile, follow,...",
+    },
+    {
+        "name": "Post",
+        "description": "Create / Update / Delete post, get Posts for feed",
     },
     {
         "name": "kkk",
@@ -47,10 +53,11 @@ app.add_middleware(
 
 init_di()
 
-from v1.routers import authentication, db_es, user
+from v1.routers import authentication, db_es, user, post
 
 app.include_router(authentication.router)
 app.include_router(user.router)
+app.include_router(post.router)
 app.include_router(db_es.router)
 
 

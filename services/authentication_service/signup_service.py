@@ -106,5 +106,8 @@ class SignUpService():
             user = self.session.query(User).filter(User.username == username).first()
         return user.id if user else None
         
+    def get_email_by_uid(self, uid):
+        user = self.session.query(User).get(uid)
+        return user.email if user else None
 
         

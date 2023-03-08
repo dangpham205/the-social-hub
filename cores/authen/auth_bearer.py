@@ -1,6 +1,10 @@
+import datetime
 from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer,HTTPAuthorizationCredentials
+
+from cores.schemas.sche_base import DataResponse
 from .auth_handler import decodeJWT
+from fastapi.responses import JSONResponse
 import time
 
 class JWTBearer(HTTPBearer):
@@ -17,14 +21,18 @@ class JWTBearer(HTTPBearer):
     async def __call__(self, request: Request):
         """Được gọi trước khi thực hiện request"""
         credentials: HTTPAuthorizationCredentials = await super(JWTBearer,self).__call__(request)
-        
+        # obj(scheme='Bearer' credentials='token that got from api call')
+
         if credentials:
             
             if not credentials.scheme == "Bearer": # kiểm tra tính đúng đắn theo chuẩn Bearer
                 raise HTTPException(status_code=403, detail='Invalid authentication scheme')
             
-            if not self.verify_jwt(credentials.credentials): # kiểm tra token
-                raise HTTPException(status_code=403, detail='Invalid token or expired')
+            verify_token = self.verify_jwt(credentials.credentials) # kiểm tra token
+            if verify_token == False:
+                raise HTTPException(status_code=401, detail='Invalid token')
+            if verify_token == None:
+                raise HTTPException(status_code=402, detail='Expired token')
             
             return credentials.credentials
         
@@ -33,21 +41,19 @@ class JWTBearer(HTTPBearer):
         
     # cần bổ sung thêm thông số của request để nhận biết url nào đang được gọi đến
     def verify_jwt(self,jwtoken: str)->bool:
-        isTokenValid: bool = False
+        # False: token can't be decoded
+        # None: token expired --> proceed with login
+        # True: OK 
+        payload = decodeJWT(token=jwtoken)
         try:
-            payload = decodeJWT(jwtoken, with_secret_key=False)
-            #
-
-            #sau khi phân rã và xác định user_ID, truy tìm chức danh và phòng ban
-            # print('payload',payload['expires'])
-            # print('timesystem',time.time())
-            # phân rã thông tin từ payload để xác định người dùng có thể thực hiện chức năng này hay không,
-            # nếu không đúng sẽ raise HTTPException cũng như kiểm tra thời gian hiệu lực của token (nếu cần)
-            # remove cmt to verify jwt_key is timeout
-            # if time.time() < payload['expires']:
-            #     raise HTTPException(status_code=403, detail='Token timeout')
+            expires_at = payload['expires_at']
+            now = datetime.datetime.now()
+            expires_at = datetime.datetime.strptime(expires_at, '%Y-%m-%dT%H:%M:%S.%f')
+            if now > expires_at: 
+                return None
+            return payload
         except:
-            payload = None
-        if payload:
-            isTokenValid = True
-        return isTokenValid
+            return payload
+
+
+    
