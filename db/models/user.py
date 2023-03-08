@@ -43,6 +43,7 @@ class User(BaseModel):
             'id': self.id,
             'username': self.username,
             'email': self.email,
+            'phone': self.phone,
             'full_name': self.full_name,
             'avatar': self.avatar,
             'avatar_2nd': self.avatar_2nd,
