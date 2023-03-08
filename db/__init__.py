@@ -9,6 +9,6 @@ Base = declarative_base()
     Import các class cần cho việc tạo bảng. Import class nào thì tạo bảng đó
 """
 from .models.user import User
-from .models.like import Like
-from .models.post import Post
+# from .models.like import Like
+# from .models.post import Post
 

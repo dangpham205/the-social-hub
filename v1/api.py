@@ -10,6 +10,8 @@ Developers:\n
     + Kien Duong (Frontend)
 Hotlines:\n
     + 911
+Error codes:\n
+    + https://github.com/dawnnywhereyouat/the-social-hub/blob/main/error_codes.txt
 """
 tags_metadata = [
     {
