@@ -80,10 +80,6 @@ async def login(obj: authentication_schema.LoginBase):
     user_token = TokenService(uid=uid).generate_user_token(long_live=obj.remember_me)
     return DataResponse().success_response('Login success', token=user_token)
 
-# @router.post('/-----------------------------------------------')
-# async def below_not_done(token: str):
-#     return 1
-
 # @router.post('/request-reset-password')
 # async def request_reset_password(email: str):
 #     return 1

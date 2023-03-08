@@ -27,6 +27,10 @@ tags_metadata = [
         "description": "Create / Update / Delete post, get Posts for feed",
     },
     {
+        "name": "Utils",
+        "description": "Support APIs",
+    },
+    {
         "name": "kkk",
         "description": "Only God knows why I'm here",
     },
@@ -53,11 +57,12 @@ app.add_middleware(
 
 init_di()
 
-from v1.routers import authentication, db_es, user, post
+from v1.routers import authentication, db_es, user, post, utils
 
 app.include_router(authentication.router)
 app.include_router(user.router)
 app.include_router(post.router)
+app.include_router(utils.router)
 app.include_router(db_es.router)
 
 

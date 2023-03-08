@@ -29,7 +29,7 @@ desc_pagi_post = f"""Get post\n
 @refresh_token
 async def get(user_token=Depends(JWTBearer())):
     post_service = PostService(user_token=user_token)
-    data = post_service.paginate_posts()
+    data = post_service.get_posts()
     return data
 
 @router.post('', description=desc_create_post)
@@ -41,7 +41,7 @@ async def create_post(obj: post_schema.CreatePostSchema, user_token=Depends(JWTB
 
 @router.delete('/{id}', description=desc_delete_post)
 @refresh_token
-async def create_post(id: int, user_token=Depends(JWTBearer())):
+async def delete_post(id: int, user_token=Depends(JWTBearer())):
     post_service = PostService(user_token=user_token)
     data = post_service.delete_post(id=id)
     return data 
