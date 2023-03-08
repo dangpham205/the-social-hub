@@ -29,7 +29,6 @@ class UserService():
         if not user:
             return DataResponse().custom_response(500, False, "User not found")
         data =  user.__repr__()
-        data['is_owner'] = self.is_owner
         return DataResponse().success_response(data)
 
     def get_profile(self):
@@ -46,6 +45,11 @@ class UserService():
             return DataResponse().custom_response(405, False, "What à dú đo ình")
         
         info = {key: value for key, value in info.dict().items() if value is not None}
+
+        if 'username' in info:
+            duplicate_user_username = self.session.query(User).filter(User.username == info['username']).first()
+            if duplicate_user_username:
+                return DataResponse().custom_response(500, False, f"Username already exists")
 
         user = self.session.query(User).filter(User.id == self.uid, User.is_verified == True, User.deleted_at == None).first()
         if not user:
@@ -88,3 +92,11 @@ class UserService():
             return DataResponse().custom_response(200, True, 'Update succeed')
         except Exception as e:
             return DataResponse().custom_response(501, False, 'Something went wrong. Please try again later.')
+        
+    def get_profile_posts(self):
+        user = self.session.query(User).filter(User.id == self.uid, User.is_verified == True, User.deleted_at == None).first()
+        if not user:
+            return DataResponse().custom_response(500, False, "User not found")
+        posts = user.posts
+        posts = [ item.__repr__() for item in posts if item.deleted_at == None]
+        return DataResponse().success_response(posts)

@@ -1,11 +1,8 @@
 import datetime
 from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer,HTTPAuthorizationCredentials
-
-from cores.schemas.sche_base import DataResponse
 from .auth_handler import decodeJWT
-from fastapi.responses import JSONResponse
-import time
+
 
 class JWTBearer(HTTPBearer):
     """_summary_
@@ -54,6 +51,3 @@ class JWTBearer(HTTPBearer):
             return payload
         except:
             return payload
-
-
-    

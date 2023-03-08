@@ -20,3 +20,12 @@ class Post(BaseModel):
     user = relationship('User', backref='posts', 
                           primaryjoin="and_(User.id==Post.user_id, User.deleted_at == None)")
     
+    
+    def __repr__(self) -> str:
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'content': self.content,
+            'picture': self.picture,
+        }
+    

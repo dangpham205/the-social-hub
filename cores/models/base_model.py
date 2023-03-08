@@ -29,3 +29,7 @@ class BaseModel(Base):
     def update_time(self):
         self.updated_at=datetime.datetime.now()
         return
+
+    def delete(self):
+        self.deleted_at=datetime.datetime.now()
+        return
