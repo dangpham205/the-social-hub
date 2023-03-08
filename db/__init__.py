@@ -10,5 +10,5 @@ Base = declarative_base()
 """
 from .models.user import User
 # from .models.like import Like
-# from .models.post import Post
+from .models.post import Post
 

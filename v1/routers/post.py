@@ -15,14 +15,15 @@ router = APIRouter(
 )
 
 desc_create_post = f"""Create post\n
-    {return_status_codes('200', '500')}
+    {return_status_codes('200', '500', '405')}
 """
 
 @router.post('/create', description=desc_create_post)
 @refresh_token
 async def create_post(obj: post_schema.CreatePostSchema, user_token=Depends(JWTBearer())):
     post_service = PostService(user_token=user_token)
-    pass
+    data = post_service.create_post(post=obj)
+    return data 
 
 from fastapi.responses import JSONResponse
 # error_response = JSONResponse(content={"detail": "Item not found"}, status_code=400)
