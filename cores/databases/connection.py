@@ -18,9 +18,7 @@ Session_Local = sessionmaker(autocommit=False, autoflush=False, bind=_engine)
 def get_db() -> Generator:
     db: Session = Session_Local()
     try:
-        print('yield')
         yield db
     finally:
-        print('close')
         db.close()
 
