@@ -1,6 +1,6 @@
 from services.authentication_service import TokenService
 from cores.databases.connection import get_db
-from db.models.post import Post
+from db import Post
 from cores.schemas.sche_base import DataResponse
 from v1.schemas import post_schema
 
@@ -27,3 +27,15 @@ class PostService():
             return DataResponse().success_response('Create new post succeed')
         except Exception:
             return DataResponse().custom_response(500, False, 'Create new post failed. Please try again later.')
+        
+    def delete_post(self, id):
+        post = self.session.query(Post).filter(Post.id == id, Post.deleted_at == None).first()
+        if not post:
+            return DataResponse().custom_response(500, False, "Post not found")
+        
+        if post.user_id != self.uid:
+            return DataResponse().custom_response(405, False, "What à dú đo ình")
+        
+        post.delete()
+        self.session.commit()
+        return DataResponse().success_response('Delete post succeed')

@@ -88,3 +88,11 @@ class UserService():
             return DataResponse().custom_response(200, True, 'Update succeed')
         except Exception as e:
             return DataResponse().custom_response(501, False, 'Something went wrong. Please try again later.')
+        
+    def get_profile_posts(self):
+        user = self.session.query(User).filter(User.id == self.uid, User.is_verified == True, User.deleted_at == None).first()
+        if not user:
+            return DataResponse().custom_response(500, False, "User not found")
+        posts = user.posts
+        posts = [ item.__repr__() for item in posts if item.deleted_at == None]
+        return DataResponse().success_response(posts)

@@ -25,6 +25,13 @@ async def create_post(obj: post_schema.CreatePostSchema, user_token=Depends(JWTB
     data = post_service.create_post(post=obj)
     return data 
 
+@router.delete('/delete/{id}', description=desc_create_post)
+@refresh_token
+async def create_post(id: int, user_token=Depends(JWTBearer())):
+    post_service = PostService(user_token=user_token)
+    data = post_service.delete_post(id=id)
+    return data 
+
 from fastapi.responses import JSONResponse
 # error_response = JSONResponse(content={"detail": "Item not found"}, status_code=400)
 #         # Raise the custom JSON response

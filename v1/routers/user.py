@@ -69,4 +69,6 @@ async def update_cover(uid: int, obj: user_schema.UpdateAvatar2ndSchema, user_to
 @router.get('/posts/{uid}', description=desc_post_profile)
 @refresh_token
 async def get_user_posts(uid: int, user_token=Depends(JWTBearer())):
-    return
+    user = UserService(user_token=user_token, uid=uid)
+    data = user.get_profile_posts()
+    return data
