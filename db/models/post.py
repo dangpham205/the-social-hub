@@ -17,6 +17,6 @@ class Post(BaseModel):
     user_id = Column(Integer, ForeignKey('user.id'))
     content = Column(Text, nullable=False)
     picture = Column(String(20), nullable=True)
-    user = relationship('User', backref='user', 
+    user = relationship('User', backref='posts', 
                           primaryjoin="and_(User.id==Post.user_id, User.deleted_at == None)")
     

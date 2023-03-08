@@ -5,7 +5,7 @@ from cores.schemas.sche_base import DataResponse
 
 
 class UserService():
-    def __init__(self, user_token: str, uid: int):
+    def __init__(self, user_token: str, uid: int =None):
         # - user_token: id of the user that want to perform the action. It will also authorized the user to perform 
         # other actions: change avatar, change cover photo
         # - uid : id of the user that will be interacted with. Eg: get their info, get their posts, etc...
@@ -13,13 +13,24 @@ class UserService():
         self.uid = uid
         self.is_owner = False
         self.session = next(get_db())
-        self.__verify_owner()
+        if self.uid:
+            self.__verify_owner()
         
     def __verify_owner(self):
         token_service = TokenService(token=self.user_token)
         uid = token_service.get_uid_from_token()
         if uid == self.uid:
             self.is_owner = True
+            
+    def get_my_profile(self):
+        token_service = TokenService(token=self.user_token)
+        uid = token_service.get_uid_from_token()
+        user = self.session.query(User).filter(User.id == uid, User.is_verified == True, User.deleted_at == None).first()
+        if not user:
+            return DataResponse().custom_response(500, False, "User not found")
+        data =  user.__repr__()
+        data['is_owner'] = self.is_owner
+        return DataResponse().success_response(data)
 
     def get_profile(self):
         user = self.session.query(User).filter(User.id == self.uid, User.is_verified == True, User.deleted_at == None).first()

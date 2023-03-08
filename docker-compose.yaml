@@ -51,36 +51,36 @@ services:
     dns:
       - 8.8.8.8
 
-  elasticsearch:
-    container_name: es-container
-    build:
-      context: .
-      dockerfile: docker/elasticsearch/Dockerfile
-      args:
-        - ELK_VERSION=${ES_VERSION}
-        - ELASTICSEARCH_PORT=${ELASTICSEARCH_PORT}
-    volumes:
-      - ./docker/elasticsearch:/var/lib/elasticsearch/data
-    environment:
-      - cluster.name=laradock-cluster
-      - node.name=laradock-node
-      - bootstrap.memory_lock=true
-      - cluster.initial_master_nodes=laradock-node
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 262144
-        hard: 262144
-    ports:
-    - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
-    # depends_on:
-    #   - thesocialhub
-    networks:
-      - mynetwork
-    dns:
-      - 8.8.8.8
+  # elasticsearch:
+  #   container_name: es-container
+  #   build:
+  #     context: .
+  #     dockerfile: docker/elasticsearch/Dockerfile
+  #     args:
+  #       - ELK_VERSION=${ES_VERSION}
+  #       - ELASTICSEARCH_PORT=${ELASTICSEARCH_PORT}
+  #   volumes:
+  #     - ./docker/elasticsearch:/var/lib/elasticsearch/data
+  #   environment:
+  #     - cluster.name=laradock-cluster
+  #     - node.name=laradock-node
+  #     - bootstrap.memory_lock=true
+  #     - cluster.initial_master_nodes=laradock-node
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #     nofile:
+  #       soft: 262144
+  #       hard: 262144
+  #   ports:
+  #   - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
+  #   # depends_on:
+  #   #   - thesocialhub
+  #   networks:
+  #     - mynetwork
+  #   dns:
+  #     - 8.8.8.8
 
 #   rabbitmq:
 #     build:

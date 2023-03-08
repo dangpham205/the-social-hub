@@ -31,6 +31,13 @@ desc_post_profile = f"""Get user's posts\n
     {return_status_codes('200', '500', '405', '501')}
 """
 
+@router.get('/profile/me', description=desc_get_profile)
+@refresh_token
+async def get_my_profile(user_token=Depends(JWTBearer())):
+    user = UserService(user_token=user_token)
+    data = user.get_my_profile()
+    return data
+
 @router.get('/profile/{uid}', description=desc_get_profile)
 @refresh_token
 async def get_profile(uid: int, user_token=Depends(JWTBearer())):
