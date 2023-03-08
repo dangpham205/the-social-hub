@@ -18,10 +18,16 @@ router = APIRouter(
 desc_create_post = f"""Create post\n
     {return_status_codes('200', '500', '405')}
 """
+desc_delete_post = f"""Delete post\n
+    {return_status_codes('200', '500', '405')}
+"""
+desc_pagi_post = f"""Get post\n
+    {return_status_codes('200', '500')}
+"""
 
-@router.get('', description=desc_create_post)
+@router.get('', description=desc_pagi_post)
 @refresh_token
-async def paginate(user_token=Depends(JWTBearer())):
+async def get(user_token=Depends(JWTBearer())):
     post_service = PostService(user_token=user_token)
     data = post_service.paginate_posts()
     return data
@@ -33,7 +39,7 @@ async def create_post(obj: post_schema.CreatePostSchema, user_token=Depends(JWTB
     data = post_service.create_post(post=obj)
     return data 
 
-@router.delete('/{id}', description=desc_create_post)
+@router.delete('/{id}', description=desc_delete_post)
 @refresh_token
 async def create_post(id: int, user_token=Depends(JWTBearer())):
     post_service = PostService(user_token=user_token)

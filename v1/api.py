@@ -11,7 +11,7 @@ Developers:\n
 Hotlines:\n
     + 911
 Error codes:\n
-    + https://github.com/dawnnywhereyouat/the-social-hub/blob/main/error_codes.txt
+    + https://github.com/dawnnywhereyouat/the-social-hub/blob/main/error_codes.py
 """
 tags_metadata = [
     {
