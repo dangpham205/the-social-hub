@@ -1,7 +1,6 @@
 from db import User
 from sqlalchemy import or_
 from cores.databases.connection import get_db
-from repositories.services import UserService
 from cores.authen import signJWT, decodeJWT
 import datetime
 from decouple import config
@@ -30,7 +29,6 @@ class SignUpService():
 
     def write_unverified_user(self):
         try:
-            service = UserService()
             user = User(
                 username=self.info.username,
                 email=self.info.email,
@@ -40,8 +38,10 @@ class SignUpService():
                 # gender=self.info.gender,
                 password=self.info.password
             )
-            result = service.repo.create(self.session, user)
-            return result
+            self.session.add(user)
+            self.session.commit()
+            self.session.refresh(user)
+            return user
         except Exception as e:
             print(e)
             return None

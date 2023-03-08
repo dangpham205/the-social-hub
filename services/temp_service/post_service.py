@@ -3,11 +3,12 @@ from cores.databases.connection import get_db
 from db import Post
 from cores.schemas.sche_base import DataResponse
 from v1.schemas import post_schema
+from sqlalchemy import and_, desc, or_
 
 class PostService():
     def __init__(self, user_token: str):
-        self.user_token = user_token
         self.session = next(get_db())
+        self.user_token = user_token
         self.uid = None
         self.__get_uid()
 
@@ -39,3 +40,8 @@ class PostService():
         post.delete()
         self.session.commit()
         return DataResponse().success_response('Delete post succeed')
+    
+    def paginate_posts(self):
+        data = self.session.query(Post).filter(Post.deleted_at ==None).order_by(desc(Post.updated_at)).all()
+        return DataResponse().success_response(data=data)
+        

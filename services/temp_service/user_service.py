@@ -29,7 +29,6 @@ class UserService():
         if not user:
             return DataResponse().custom_response(500, False, "User not found")
         data =  user.__repr__()
-        data['is_owner'] = self.is_owner
         return DataResponse().success_response(data)
 
     def get_profile(self):
@@ -69,6 +68,11 @@ class UserService():
             self.session.commit()
             return DataResponse().custom_response(200, True, info)
         except Exception:
+            if 'username' in info:
+                duplicate_user_username = self.session.query(User).filter(User.username == self.info.username).first()
+                if duplicate_user_username:
+                    return DataResponse().custom_response(500, False, f"Username already exists")
+                
             return DataResponse().custom_response(501, False, 'Something went wrong. Please try again later.')
         
     def update_avatar(self, **kwargs):
