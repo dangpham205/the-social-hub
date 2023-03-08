@@ -1,6 +1,6 @@
 from services.authentication_service import TokenService
 from cores.databases.connection import get_db
-from db import Post
+from db.models.post import Post
 from cores.schemas.sche_base import DataResponse
 
 class PostService():
