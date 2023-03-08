@@ -1,5 +1,4 @@
 from fastapi import APIRouter, status, HTTPException, Depends, Request, UploadFile, File
-from cores.schemas.sche_base import DataResponse
 from v1.schemas import user_schema
 from cores.helpers import helper
 from utils.util_funcs import return_status_codes
@@ -28,6 +27,9 @@ desc_avt2_profile = f"""Update user cover photo\n
     {return_status_codes('200', '500', '405', '501')}
 """
 desc_post_profile = f"""Get user's posts\n
+    {return_status_codes('200', '500', '405', '501')}
+"""
+desc_suggest_friends = f"""Suggest other people\n
     {return_status_codes('200', '500', '405', '501')}
 """
 
@@ -71,4 +73,11 @@ async def update_cover(uid: int, obj: user_schema.UpdateAvatar2ndSchema, user_to
 async def get_user_posts(uid: int, user_token=Depends(JWTBearer())):
     user = UserService(user_token=user_token, uid=uid)
     data = user.get_profile_posts()
+    return data
+
+@router.get('/suggest-friends', description=desc_suggest_friends)
+@refresh_token
+async def suggest_friends(batch: int = 10, user_token=Depends(JWTBearer())):
+    user = UserService(user_token=user_token)
+    data = user.suggest_friends(batch=batch)
     return data

@@ -2,7 +2,7 @@ from services.authentication_service import TokenService
 from cores.databases.connection import get_db
 from db import User
 from cores.schemas.sche_base import DataResponse
-
+import random
 
 class UserService():
     def __init__(self, user_token: str, uid: int =None):
@@ -100,3 +100,24 @@ class UserService():
         posts = user.posts
         posts = [ item.__repr__() for item in posts if item.deleted_at == None]
         return DataResponse().success_response(posts)
+    
+    def suggest_friends(self, batch):
+        num_rows = self.session.query(User.id).count()
+        # generate a list of random id values
+        random_ids = random.sample(range(1, num_rows + 1), 2) 
+        random_ids = [2,3] 
+        print('PPP'*10)
+        print(num_rows, random_ids)
+
+        token_service = TokenService(token=self.user_token)
+        uid = token_service.get_uid_from_token()
+        users = self.session.query(User).filter(
+            User.id != uid, 
+            User.is_verified == True, 
+            User.deleted_at == None, 
+            # User.id.in_(random_ids)
+        ).all()
+        users = [item.__repr__() for item in users]
+        return DataResponse().success_response(users)
+
+        
