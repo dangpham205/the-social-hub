@@ -11,7 +11,7 @@ import re
 class CreatePostSchema(BaseModel):
     user_id: int
     content: str
-    picture: str
+    picture: str = None
     
     class Config:
         orm_mode = True
