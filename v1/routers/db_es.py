@@ -72,8 +72,20 @@ def create_tables(password: str):
         u6 = User(username='NAV', email='u6@gmail.com', full_name='Navi No1', 
                   avatar=None, avatar_2nd = None, bio = 'lam di', location = 'Not Africa',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
+        u7 = User(username='popsmoke', email='u7@gmail.com', full_name='Pop Smoke', 
+                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'New York',
+                  phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
+        u8 = User(username='mck', email='u8@gmail.com', full_name='Ghe Tlinh', 
+                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'Not that H-Town',
+                  phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
+        u9 = User(username='sol7', email='u9@gmail.com', full_name='Su phu 7', 
+                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'It"s Jail Time',
+                  phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
+        u10 = User(username='Lukaku', email='u10@gmail.com', full_name='Lukaku', 
+                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'MU',
+                  phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
          
-        users = [u1, u2, u3, u4, u5, u6]
+        users = [u1, u2, u3, u4, u5, u6, u7, u8, u9, u10]
         for user in users:
             try:
                 session.add(user)
