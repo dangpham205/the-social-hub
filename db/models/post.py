@@ -27,5 +27,6 @@ class Post(BaseModel):
             'user_id': self.user_id,
             'content': self.content,
             'picture': self.picture,
+            'user': self.user.__repr__(),
         }
     
