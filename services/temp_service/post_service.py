@@ -42,6 +42,7 @@ class PostService():
         return DataResponse().success_response('Delete post succeed')
     
     def get_posts(self):
-        data = self.session.query(Post).filter(Post.deleted_at ==None).order_by(desc(Post.id)).all()
-        return DataResponse().success_response(data=data)
+        posts = self.session.query(Post).filter(Post.deleted_at ==None).order_by(desc(Post.id)).all()
+        posts = [ post.__repr__() for post in posts]
+        return DataResponse().success_response(data=posts)
         
