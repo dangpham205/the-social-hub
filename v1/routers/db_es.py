@@ -55,34 +55,34 @@ def create_tables(password: str):
     session = next(get_db())
     if password == '123':
         u1 = User(username='playboicarti', email='u1@gmail.com', full_name='Playboi Ca Mau', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'Mars',
+                  avatar='/files/avatars/u1.jpg', avatar_2nd = '/files/covers/c1.jpg', bio = 'lam di', location = 'Mars',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u2 = User(username='kanyewest', email='u2@gmail.com', full_name='Chu Kanye', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'Moon',
+                  avatar='/files/avatars/u2.jpg', avatar_2nd = '/files/covers/c2.jpg', bio = 'lam di', location = 'Moon',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u3 = User(username='liluzineku', email='u3@gmail.com', full_name='Tieu^~ Uzi', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'O2O',
+                  avatar='/files/avatars/u3.jpg', avatar_2nd = '/files/covers/c3.jpg', bio = 'lam di', location = 'O2O',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u4 = User(username='lilyatchy', email='u4@gmail.com', full_name='Lil Yatchy', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'Suburb',
+                  avatar='/files/avatars/u4.jpg', avatar_2nd = None, bio = 'lam di', location = 'Suburb',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u5 = User(username='kencarson', email='u5@gmail.com', full_name='Ken Carson', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'Teen Titan Headquarter',
+                  avatar='/files/avatars/u5.jpg', avatar_2nd = None, bio = 'lam di', location = 'Teen Titan Headquarter',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u6 = User(username='NAV', email='u6@gmail.com', full_name='Navi No1', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'Not Africa',
+                  avatar='/files/avatars/u6.jpg', avatar_2nd = None, bio = 'lam di', location = 'Not Africa',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u7 = User(username='popsmoke', email='u7@gmail.com', full_name='Pop Smoke', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'New York',
+                  avatar='/files/avatars/u7.jpg', avatar_2nd = None, bio = 'lam di', location = 'New York',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u8 = User(username='mck', email='u8@gmail.com', full_name='Ghe Tlinh', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'Not that H-Town',
+                  avatar='/files/avatars/u8.jpg', avatar_2nd = None, bio = 'lam di', location = 'Not that H-Town',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u9 = User(username='sol7', email='u9@gmail.com', full_name='Su phu 7', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'It"s Jail Time',
+                  avatar='/files/avatars/u9.jpg', avatar_2nd = None, bio = 'lam di', location = 'It"s Jail Time',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
         u10 = User(username='Lukaku', email='u10@gmail.com', full_name='Lukaku', 
-                  avatar=None, avatar_2nd = None, bio = 'lam di', location = 'MU',
+                  avatar='/files/avatars/u10.jpg', avatar_2nd = None, bio = 'lam di', location = 'MU',
                   phone='03123123', dob='2000-3-8', gender='Male', password='passpass', is_verified=True)
          
         users = [u1, u2, u3, u4, u5, u6, u7, u8, u9, u10]
@@ -103,7 +103,7 @@ def create_tables(password: str):
         p2 = Post(
             user_id = u2.id, 
             content="I am so clever that sometimes I don't understand a single word of what I am saying.", 
-            picture= None
+            picture= '/files/posts/p2.jpg'
         )
         p3 = Post(
             user_id = u3.id, 
@@ -113,7 +113,7 @@ def create_tables(password: str):
         p4 = Post(
             user_id = u4.id, 
             content="I'm not lazy, I'm just on energy-saving mode.", 
-            picture= None
+            picture= '/files/posts/p4.jpg'
         )
         p5 = Post(
             user_id = u5.id, 
@@ -123,7 +123,7 @@ def create_tables(password: str):
         p6 = Post(
             user_id = u6.id, 
             content="I'm not arguing, I'm just explaining why I'm right.", 
-            picture= None
+            picture= '/files/posts/p6.jpg'
         )
         posts = [p1, p2, p3, p4, p5, p6]
         for post in posts:
