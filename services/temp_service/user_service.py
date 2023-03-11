@@ -100,6 +100,7 @@ class UserService():
             return DataResponse().custom_response(500, False, "User not found")
         posts = user.posts
         posts = [ item.__repr__() for item in posts if item.deleted_at == None]
+        posts = sorted(posts, key=lambda x: x['id'], reverse=True)
         return DataResponse().success_response(posts)
     
     def suggest_friends(self, batch):
