@@ -3,7 +3,7 @@ from cores.databases.connection import get_db
 from db import User
 from cores.schemas.sche_base import DataResponse
 import random
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 class UserService():
     def __init__(self, user_token: str, uid: int =None):
@@ -118,4 +118,16 @@ class UserService():
         users = [item.__repr__() for item in users]
         return DataResponse().success_response(users)
 
-        
+    def search_users(self, kw):
+        token_service = TokenService(token=self.user_token)
+        user_id = token_service.get_uid_from_token()
+
+        users = self.session.query(User).filter(
+            or_(
+                func.lower(User.username).contains(func.lower(kw)),
+                func.lower(User.full_name).contains(func.lower(kw)),
+            ),
+            User.id != user_id
+        ).limit(5).all()
+        users = [item.__repr__() for item in users]
+        return DataResponse().success_response(users)

@@ -32,6 +32,9 @@ desc_post_profile = f"""Get user's posts\n
 desc_suggest_friends = f"""Suggest other people\n
     {return_status_codes('200', '500', '405', '501')}
 """
+desc_search_user = f"""Get list user\n
+    {return_status_codes('200', '500')}
+"""
 
 @router.get('/profile/me', description=desc_get_profile)
 @refresh_token
@@ -80,4 +83,11 @@ async def get_user_posts(uid: int, user_token=Depends(JWTBearer())):
 async def suggest_friends(batch: int = 10, user_token=Depends(JWTBearer())):
     user = UserService(user_token=user_token)
     data = user.suggest_friends(batch=batch)
+    return data
+
+@router.get('/search', description=desc_search_user)
+@refresh_token
+async def suggest_friends(kw: str, user_token=Depends(JWTBearer())):
+    user = UserService(user_token=user_token)
+    data = user.search_users(kw=kw)
     return data
