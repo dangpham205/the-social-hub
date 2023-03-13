@@ -43,7 +43,6 @@ services:
       - TZ=Asia/Ho_Chi_Minh
     volumes:
       - ./docker/db/sql_files:/usr/share/sql_files/
-      # - ./docker/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - ${DB_PORT}:3306
     networks:
